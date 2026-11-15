@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+models/
+bin/
+workspace/
+data/raw/
+data/processed/
+data/memory.sqlite3
+*.gguf
+*.safetensors
+*.pt

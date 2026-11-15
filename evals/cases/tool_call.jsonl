@@ -1,0 +1,6 @@
+{"messages": [{"role": "user", "content": "Đọc file config.yaml giúp tôi"}], "expect_tool": "read_file", "expect_args": {"path": "config.yaml"}}
+{"messages": [{"role": "user", "content": "Liệt kê các file trong thư mục src"}], "expect_tool": "list_dir", "expect_args": {"path": "src"}}
+{"messages": [{"role": "user", "content": "Ghi dòng 'xin chào' vào file hello.txt"}], "expect_tool": "write_file", "expect_args": {"path": "hello.txt", "content": "xin chào"}}
+{"messages": [{"role": "user", "content": "Tính tổng các số từ 1 đến 100 bằng python"}], "expect_tool": "run_python", "expect_args": {}}
+{"messages": [{"role": "user", "content": "Thủ đô của Việt Nam là gì?"}], "expect_tool": null}
+{"messages": [{"role": "user", "content": "Giải thích khác nhau giữa list và tuple trong Python"}], "expect_tool": null}

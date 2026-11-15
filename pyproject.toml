@@ -1,0 +1,14 @@
+[project]
+name = "qwen-x3-local"
+version = "0.3.0"
+description = "Chạy Qwen2.5-3B-Instruct (abliterated) Q4_K_M + LoRA trên Windows bằng llama.cpp"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra"

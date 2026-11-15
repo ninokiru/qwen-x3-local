@@ -1,0 +1,13 @@
+{
+  "stage": "M1",
+  "base_model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+  "train_backbone": false,
+  "train_adapters": true,
+  "train_router": true,
+  "sequence_length_smoke_test": 128,
+  "notes": [
+    "M1 validates architecture and weight mapping only; it does not train.",
+    "Use cloud GPU for full checkpoint loading.",
+    "Do not enable training until M1 checkpoint parity tests pass."
+  ]
+}

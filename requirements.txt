@@ -1,0 +1,2 @@
+# Runtime không cần thư viện ngoài. Chỉ cần pytest để chạy test trên máy local.
+pytest>=8.0

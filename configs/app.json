@@ -1,0 +1,13 @@
+{
+  "server": {
+    "base_url": "http://127.0.0.1:8080",
+    "timeout_s": 300,
+    "temperature": 0.2,
+    "max_tokens": 1024
+  },
+  "workspace": "workspace",
+  "max_steps": 6,
+  "max_history": 40,
+  "run_timeout_s": 20,
+  "db_path": "data/memory.sqlite3"
+}

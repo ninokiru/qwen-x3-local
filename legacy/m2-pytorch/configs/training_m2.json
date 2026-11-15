@@ -1,0 +1,30 @@
+{
+  "runtime_profile": "local_cpu_lite",
+  "local_cpu_lite": {
+    "device": "cpu",
+    "batch_size": 1,
+    "sequence_length": 32,
+    "num_workers": 0,
+    "gradient_checkpointing": false,
+    "load_full_base_checkpoint": false,
+    "run_real_checkpoint_tests": false,
+    "purpose": "unit tests and small synthetic forward/backward only"
+  },
+  "full_training": {
+    "device": "cloud_gpu_required",
+    "mixed_precision": "bf16_or_fp16_if_supported",
+    "load_full_base_checkpoint": true,
+    "note": "Do not run full 3B training on Pentium G7400 / 8 GB RAM."
+  },
+  "router": {
+    "load_balance_weight": 0.01,
+    "entropy_weight": 0.0,
+    "expert_names": ["coding", "reasoning", "agent", "multilingual"]
+  },
+  "data_requirements": {
+    "coding": "code, repair, tests, repository patches",
+    "reasoning": "multi-step technical reasoning traces",
+    "agent": "tool selection, tool calls, observation/action trajectories",
+    "multilingual": "parallel and naturally authored multilingual code/docs"
+  }
+}

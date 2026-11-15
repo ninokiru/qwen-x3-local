@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+artifacts/
+checkpoints/
+datasets/cache/
+*.gguf
+*.safetensors
+__pycache__/
+.pytest_cache/
+*.py[cod]
+.venv/
+artifacts/
+HF_HUB_CACHE/
+.cache/
