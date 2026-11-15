@@ -1,6 +1,62 @@
-{"messages": [{"role": "user", "content": "Đọc file config.yaml giúp tôi"}], "expect_tool": "read_file", "expect_args": {"path": "config.yaml"}}
-{"messages": [{"role": "user", "content": "Liệt kê các file trong thư mục src"}], "expect_tool": "list_dir", "expect_args": {"path": "src"}}
-{"messages": [{"role": "user", "content": "Ghi dòng 'xin chào' vào file hello.txt"}], "expect_tool": "write_file", "expect_args": {"path": "hello.txt", "content": "xin chào"}}
-{"messages": [{"role": "user", "content": "Tính tổng các số từ 1 đến 100 bằng python"}], "expect_tool": "run_python", "expect_args": {}}
-{"messages": [{"role": "user", "content": "Thủ đô của Việt Nam là gì?"}], "expect_tool": null}
-{"messages": [{"role": "user", "content": "Giải thích khác nhau giữa list và tuple trong Python"}], "expect_tool": null}
+{"messages":[{"role":"user","content":"Đọc file config.yaml giúp tôi"}],"expect_tool":"read_file","expect_args":{"path":"config.yaml"}}
+{"messages":[{"role":"user","content":"Liệt kê các file trong thư mục src"}],"expect_tool":"list_dir","expect_args":{"path":"src"}}
+{"messages":[{"role":"user","content":"Ghi dòng 'xin chào' vào file hello.txt"}],"expect_tool":"write_file","expect_args":{"path":"hello.txt","content":"xin chào"}}
+{"messages":[{"role":"user","content":"Tính tổng các số từ 1 đến 100 bằng python"}],"expect_tool":"run_python","expect_args":{}}
+{"messages":[{"role":"user","content":"Thủ đô của Việt Nam là gì?"}],"expect_tool":null}
+{"messages":[{"role":"user","content":"Giải thích khác nhau giữa list và tuple trong Python"}],"expect_tool":null}
+{"messages":[{"role":"user","content":"Đọc file README.md"}],"expect_tool":"read_file","expect_args":{"path":"README.md"}}
+{"messages":[{"role":"user","content":"Liệt kê tất cả file trong thư mục hiện tại"}],"expect_tool":"list_dir","expect_args":{"path":"."}}
+{"messages":[{"role":"user","content":"Tạo file hello.py với code in ra Hello World"}],"expect_tool":"write_file","expect_args":{"path":"hello.py"}}
+{"messages":[{"role":"user","content":"Chạy code Python in ra bảng cửu chương 3"}],"expect_tool":"run_python","expect_args":{}}
+{"messages":[{"role":"user","content":"Python là ngôn ngữ lập trình gì?"}],"expect_tool":null}
+{"messages":[{"role":"user","content":"Git và GitHub khác nhau như thế nào?"}],"expect_tool":null}
+{"messages":[{"role":"user","content":"Đọc nội dung file requirements.txt"}],"expect_tool":"read_file","expect_args":{"path":"requirements.txt"}}
+{"messages":[{"role":"user","content":"Liệt kê file trong docs/"}],"expect_tool":"list_dir","expect_args":{"path":"docs"}}
+{"messages":[{"role":"user","content":"Ghi dữ liệu JSON vào file output.json"}],"expect_tool":"write_file","expect_args":{"path":"output.json"}}
+{"messages":[{"role":"user","content":"Chạy code kiểm tra Python version"}],"expect_tool":"run_python","expect_args":{}}
+{"messages":[{"role":"user","content":"Docker là gì?"}],"expect_tool":null}
+{"messages":[{"role":"user","content":"Giải thích OOP"}],"expect_tool":null}
+{"messages":[{"role":"user","content":"Đọc file app/main.py"}],"expect_tool":"read_file","expect_args":{"path":"app/main.py"}}
+{"messages":[{"role":"user","content":"Liệt kê file trong thư mục tests/"}],"expect_tool":"list_dir","expect_args":{"path":"tests"}}
+{"messages":[{"role":"user","content":"Tạo file .gitignore cho Python project"}],"expect_tool":"write_file","expect_args":{"path":".gitignore"}}
+{"messages":[{"role":"user","content":"Chạy code tính số Fibonacci thứ 10"}],"expect_tool":"run_python","expect_args":{}}
+{"messages":[{"role":"user","content":"REST API là gì?"}],"expect_tool":null}
+{"messages":[{"role":"user","content":"Giải thích asyncio"}],"expect_tool":null}
+{"messages":[{"role":"user","content":"Đọc file data/config.json"}],"expect_tool":"read_file","expect_args":{"path":"data/config.json"}}
+{"messages":[{"role":"user","content":"Liệt kê file trong thư mục models/"}],"expect_tool":"list_dir","expect_args":{"path":"models"}}
+{"messages":[{"role":"user","content":"Lưu kết quả vào file result.txt với nội dung 'thành công'"}],"expect_tool":"write_file","expect_args":{"path":"result.txt","content":"thành công"}}
+{"messages":[{"role":"user","content":"Chạy code đọc file CSV và in ra số dòng"}],"expect_tool":"run_python","expect_args":{}}
+{"messages":[{"role":"user","content":"Big O notation là gì?"}],"expect_tool":null}
+{"messages":[{"role":"user","content":"Làm thế nào để học lập trình hiệu quả?"}],"expect_tool":null}
+{"messages":[{"role":"user","content":"Đọc file pyproject.toml"}],"expect_tool":"read_file","expect_args":{"path":"pyproject.toml"}}
+{"messages":[{"role":"user","content":"Liệt kê file trong thư mục scripts/"}],"expect_tool":"list_dir","expect_args":{"path":"scripts"}}
+{"messages":[{"role":"user","content":"Tạo file Python mới tên là utils.py"}],"expect_tool":"write_file","expect_args":{"path":"utils.py"}}
+{"messages":[{"role":"user","content":"Chạy code kiểm tra xem thư viện os có hoạt động không"}],"expect_tool":"run_python","expect_args":{}}
+{"messages":[{"role":"user","content":"HTTPS hoạt động như thế nào?"}],"expect_tool":null}
+{"messages":[{"role":"user","content":"Microservices là gì?"}],"expect_tool":null}
+{"messages":[{"role":"user","content":"Đọc file logs/app.log"}],"expect_tool":"read_file","expect_args":{"path":"logs/app.log"}}
+{"messages":[{"role":"user","content":"Liệt kê file trong thư mục configs/"}],"expect_tool":"list_dir","expect_args":{"path":"configs"}}
+{"messages":[{"role":"user","content":"Ghi log vào file debug.log với nội dung 'server started'"}],"expect_tool":"write_file","expect_args":{"path":"debug.log","content":"server started"}}
+{"messages":[{"role":"user","content":"Chạy code sắp xếp một danh sách và in kết quả"}],"expect_tool":"run_python","expect_args":{}}
+{"messages":[{"role":"user","content":"Hash table hoạt động như thế nào?"}],"expect_tool":null}
+{"messages":[{"role":"user","content":"SOLID principles là gì?"}],"expect_tool":null}
+{"messages":[{"role":"user","content":"Đọc file src/models/user.py"}],"expect_tool":"read_file","expect_args":{"path":"src/models/user.py"}}
+{"messages":[{"role":"user","content":"Liệt kê file trong thư mục data/raw/"}],"expect_tool":"list_dir","expect_args":{"path":"data/raw"}}
+{"messages":[{"role":"user","content":"Tạo file markdown CHANGELOG.md"}],"expect_tool":"write_file","expect_args":{"path":"CHANGELOG.md"}}
+{"messages":[{"role":"user","content":"Chạy code kiểm tra xem có thể import json không"}],"expect_tool":"run_python","expect_args":{}}
+{"messages":[{"role":"user","content":"BFS là gì?"}],"expect_tool":null}
+{"messages":[{"role":"user","content":"Dependency injection là gì?"}],"expect_tool":null}
+{"messages":[{"role":"user","content":"Đọc file .env"}],"expect_tool":"read_file","expect_args":{"path":".env"}}
+{"messages":[{"role":"user","content":"Liệt kê file trong thư mục src/"}],"expect_tool":"list_dir","expect_args":{"path":"src"}}
+{"messages":[{"role":"user","content":"Ghi nội dung vào file notes.md"}],"expect_tool":"write_file","expect_args":{"path":"notes.md"}}
+{"messages":[{"role":"user","content":"Chạy code tính điểm trung bình của danh sách số"}],"expect_tool":"run_python","expect_args":{}}
+{"messages":[{"role":"user","content":"CI/CD là gì?"}],"expect_tool":null}
+{"messages":[{"role":"user","content":"Websocket khác HTTP thế nào?"}],"expect_tool":null}
+{"messages":[{"role":"user","content":"Đọc file backend/settings.py"}],"expect_tool":"read_file","expect_args":{"path":"backend/settings.py"}}
+{"messages":[{"role":"user","content":"Liệt kê file trong thư mục lora/"}],"expect_tool":"list_dir","expect_args":{"path":"lora"}}
+{"messages":[{"role":"user","content":"Tạo file Python benchmark.py để đo hiệu năng"}],"expect_tool":"write_file","expect_args":{"path":"benchmark.py"}}
+{"messages":[{"role":"user","content":"Chạy code in ra tất cả số nguyên tố từ 1 đến 50"}],"expect_tool":"run_python","expect_args":{}}
+{"messages":[{"role":"user","content":"Lập trình hàm là gì?"}],"expect_tool":null}
+{"messages":[{"role":"user","content":"Làm thế nào để tối ưu query SQL?"}],"expect_tool":null}
+{"messages":[{"role":"user","content":"Đọc file workspace/output.txt"}],"expect_tool":"read_file","expect_args":{"path":"workspace/output.txt"}}
+{"messages":[{"role":"user","content":"Liệt kê file trong thư mục evals/"}],"expect_tool":"list_dir","expect_args":{"path":"evals"}}

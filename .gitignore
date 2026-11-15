@@ -4,8 +4,9 @@ __pycache__/
 models/
 bin/
 workspace/
-data/raw/
 data/processed/
+data/generated/
+evals/reports/
 data/memory.sqlite3
 *.gguf
 *.safetensors

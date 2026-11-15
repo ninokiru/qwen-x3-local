@@ -1,0 +1,20 @@
+{"question": "Viết hàm Python kiểm tra số nguyên tố", "keywords": ["def", "return"], "min_code_blocks": 1}
+{"question": "Viết hàm tính tổng các số chẵn từ 1 đến n", "keywords": ["def", "sum"], "min_code_blocks": 1}
+{"question": "Viết hàm đảo ngược một chuỗi trong Python", "keywords": ["def", "return"], "min_code_blocks": 1}
+{"question": "Viết hàm đếm số từ trong một đoạn văn", "keywords": ["split", "len"], "min_code_blocks": 1}
+{"question": "Viết hàm tìm số lớn nhất trong một danh sách", "keywords": ["def"], "min_code_blocks": 1}
+{"question": "Viết hàm tính giai thừa bằng vòng lặp", "keywords": ["def", "for"], "min_code_blocks": 1}
+{"question": "Viết hàm kiểm tra một năm có phải năm nhuận không", "keywords": ["def", "366"], "min_code_blocks": 1}
+{"question": "Viết code Python đọc file JSON và in ra một trường", "keywords": ["json", "open"], "min_code_blocks": 1}
+{"question": "Viết code ghi danh sách vào file CSV", "keywords": ["csv", "open"], "min_code_blocks": 1}
+{"question": "Viết hàm sắp xếp danh sách số tăng dần", "keywords": ["sorted"], "min_code_blocks": 1}
+{"question": "Viết hàm chuyển đổi nhiệt độ từ Celsius sang Fahrenheit", "keywords": ["def", "9/5"], "min_code_blocks": 1}
+{"question": "Viết class Python cho một tài khoản ngân hàng có số dư", "keywords": ["class", "self"], "min_code_blocks": 1}
+{"question": "Viết hàm tìm phần tử chung của hai danh sách", "keywords": ["set"], "min_code_blocks": 1}
+{"question": "Viết hàm đếm số lần xuất hiện của một phần tử trong list", "keywords": ["def", "count"], "min_code_blocks": 1}
+{"question": "Viết code dùng try except để xử lý chia cho 0", "keywords": ["try", "except"], "min_code_blocks": 1}
+{"question": "Viết hàm nhận nhiều đối số tùy ý bằng *args và **kwargs", "keywords": ["*args", "**kwargs"], "min_code_blocks": 1}
+{"question": "Viết list comprehension lọc ra các số chẵn trong danh sách", "keywords": ["for", "if"], "min_code_blocks": 1}
+{"question": "Viết hàm đệ quy tính dãy Fibonacci", "keywords": ["def", "return"], "min_code_blocks": 1}
+{"question": "Viết code Python gửi HTTP GET và in mã trạng thái phản hồi", "keywords": ["print"], "min_code_blocks": 1}
+{"question": "Viết hàm ghi log kèm thời gian hiện tại ra file", "keywords": ["datetime", "open"], "min_code_blocks": 1}
