@@ -1,14 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "qwen-x3-local"
-version = "0.3.0"
-description = "Chạy Qwen2.5-3B-Instruct (abliterated) Q4_K_M + LoRA trên Windows bằng llama.cpp"
+version = "1.0.0"
+description = "Local-first Qwen AI assistant: chat, coding tools, SQLite memory, RAG and lightweight Web UI"
 requires-python = ">=3.10"
 dependencies = []
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0"]
+documents = ["pypdf>=5.0"]
+voice = ["vosk>=0.3.45", "pyttsx3>=2.90"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
 addopts = "-ra"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*", "data*", "evals*"]
+exclude = ["tests*", "legacy*"]

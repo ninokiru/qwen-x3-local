@@ -1,105 +1,88 @@
-# Kiến trúc v0.3
+# Kiến trúc Qwen X3 Local v1.0
 
 ## Nguyên tắc
 
-1. **Model đông lạnh, tùy biến bằng LoRA.** Trọng số gốc Q4_K_M không đổi. Chuyên môn được thêm qua adapter LoRA.
-2. **Train ở đâu, chạy ở đâu tách biệt.** Train cần GPU nên làm trên Colab. Máy local chỉ suy luận và đánh giá.
-3. **Phụ thuộc tối thiểu.** Runtime dùng thư viện chuẩn Python. Không cần PyTorch trên máy local.
-4. **Định dạng tool call thống nhất.** Dữ liệu train, prompt hệ thống, parser và eval đều dùng cùng khối `<tool_call>{...}</tool_call>`. Nhờ vậy không cần phụ thuộc cờ đặc biệt của server.
+1. Model inference là tiến trình riêng `llama-server`; Python chỉ là orchestrator.
+2. Runtime lõi dùng thư viện chuẩn Python để giảm RAM và chạy offline.
+3. SQLite là nguồn lưu dữ liệu duy nhất cho memory, conversation và chỉ mục tài liệu.
+4. FTS5 + chuẩn hóa Unicode là retrieval mặc định; không tải embedding model tự động.
+5. Mọi thao tác ghi/chạy code cần quyền rõ ràng; Web UI chỉ dùng tool đọc.
+6. Tool call vẫn dùng format huấn luyện `<tool_call>{...}</tool_call>` để không lệ thuộc format đặc biệt của server.
 
-## Luồng xử lý một yêu cầu
+## Luồng
 
+```text
+CLI / Web UI
+    |
+    v
+Router (heuristic)
+    |
+    +---- chat / code / agent
+    |
+    v
+Memory + RAG retrieval (SQLite FTS5)
+    |
+    v
+Agent (bounded steps + bounded history)
+    |
+    v
+llama-server /v1/chat/completions
+    |
+    v
+Tool-call parser (size/count/schema validation)
+    |
+    +---- read-only tools -> Workspace
+    |
+    +---- write/run tools -> explicit CLI approval -> Workspace
+    |
+    v
+Final response + SQLite conversation record
 ```
-user → memory.search (thêm ngữ cảnh) → router.route (chat/code/agent)
-     → agent.ask:
-           system prompt (+ mô tả công cụ nếu mode = agent)
-           → llama-server → parse_reply
-              ├─ có tool_call → execute trong workspace → thêm role "tool" → lặp lại
-              ├─ lỗi định dạng → nhắc model sửa → lặp lại
-              └─ không có tool_call → trả lời
-```
 
-`max_steps` giới hạn số vòng gọi công cụ, tránh lặp vô hạn.
+## Modules
 
-## Các thành phần
-
-| Module | Vai trò |
+| Module | Trách nhiệm |
 |---|---|
-| `app/llm_client.py` | Gọi `/v1/chat/completions`, chỉ dùng `urllib` |
-| `app/tool_calls.py` | Phân tích khối tool_call và sinh mô tả công cụ |
-| `app/tools.py` | Công cụ và kiểm soát đường dẫn trong workspace |
-| `app/agent.py` | Vòng lặp agent |
-| `app/router.py` | Chọn chế độ và ánh xạ sang LoRA |
-| `app/memory.py` | SQLite FTS5 với `remove_diacritics` |
-| `data/prepare_dataset.py` | Kiểm tra định dạng, thống kê tỷ lệ tiếng Việt và tool call, chia train/eval |
-| `evals/tool_call_eval.py` | Chấm format, tên công cụ, tham số |
-| `evals/code_eval.py` | Chấm khối code, từ khóa bắt buộc, không lẫn tool_call |
-| `evals/chat_eval.py` | Chấm chủ đề cần nêu, không lẫn tool_call, trả lời tiếng Việt |
-| `evals/run_all.py` | Chạy cả 3 suite, lưu báo cáo JSON vào `evals/reports/` |
+| `app/config.py` | Cấu hình lồng nhau, tương thích cấu hình v0.3 |
+| `app/llm_client.py` | HTTP client, timeout, retry giới hạn, health check |
+| `app/model_manager.py` | Validate local GGUF/LoRA paths, build server args |
+| `app/router.py` | Classify chat/code/agent bằng luật nhẹ |
+| `app/agent.py` | Context, tool loop, stop limit, approval gate |
+| `app/tool_calls.py` | Parse format, giới hạn số lượng/kích thước call |
+| `app/tools.py` | Workspace, schema, tool registry, permission |
+| `app/memory.py` | SQLite, FTS5, normalized index, notes, conversations |
+| `app/rag/` | Load TXT/MD/source/DOCX/PDF optional, chunk, retrieve |
+| `app/coding/` | Project scan, code search, diff preview |
+| `app/planning.py` | Kế hoạch quy tắc nhẹ, không model riêng |
+| `app/web.py` | Web UI và localhost JSON API bằng `http.server` |
+| `app/voice.py` | Optional offline Vosk STT / pyttsx3 TTS adapters |
 
-## Hot-swap LoRA
+## Bảo mật
 
-Mục tiêu là một base và nhiều LoRA. Cách thực hiện phụ thuộc phiên bản llama.cpp:
+- `Workspace.resolve()` resolve symlink và chặn đường dẫn ra ngoài workspace.
+- File đọc/ghi giới hạn 1 MB; tool output giới hạn 5.000 ký tự.
+- Tool schema từ chối tham số thiếu, thừa và sai kiểu.
+- `write_file`, `run_python`, `run_tests` có `requires_approval`.
+- `run_python` mặc định tắt; khi bật vẫn chạy với quyền của user Windows, không phải sandbox.
+- Web UI chỉ đăng ký tool đọc, bind `127.0.0.1`, giới hạn upload và định dạng.
+- Không ghi prompt vào HTTP access log.
 
-- Nạp nhiều LoRA lúc khởi động bằng `--lora` (xem `scripts/run_server.ps1`).
-- Đổi LoRA đang dùng khi chạy: kiểm tra endpoint điều chỉnh scale LoRA trong phiên bản đang dùng.
+## RAM
 
-Nếu bản llama.cpp không hỗ trợ tốt, phương án dự phòng là hai tiến trình server, mỗi tiến trình một LoRA. Chi phí RAM sẽ tăng, nên cần đo trước.
+Cấu hình gợi ý ban đầu: context 4096, threads 2, max_tokens 768, agent history 12 message, một model server. KV cache và tổng RAM còn phụ thuộc build llama.cpp, model, backend, CPU và context thực tế. Đo trên máy đích; nếu thiếu RAM hạ context về 2048.
 
-## Ngân sách RAM (ước tính)
+## LoRA
 
-| Mục | Dung lượng |
-|---|---|
-| Base Q4_K_M | ~2 GB |
-| KV cache (4096 ngữ cảnh) | ~0.15 GB |
-| Mỗi LoRA | vài chục đến vài trăm MB |
-| Ứng dụng Python | < 100 MB |
-| Windows và phần còn lại | phần còn lại trong 8 GB |
+`MODE_TO_LORA` là metadata cho chat/code/agent, không bảo đảm adapter tự chuyển. Script nạp LoRA khi khởi động. Chuyển adapter cần restart server nếu phiên bản llama.cpp không cung cấp API runtime đã xác minh. Không chạy đồng thời nhiều server trên cấu hình 8GB.
 
-## Việc chưa làm
+## RAG
 
-- Bộ dữ liệu train thật (tiếng Việt, code, tool call).
-- Embedding ngữ nghĩa cho bộ nhớ.
-- Router học được, thay cho từ khóa.
-- Sandbox bảo mật cho `run_python`.
+File được đọc theo extension allowlist, chia chunk mặc định 1800 ký tự và overlap 200. Index lưu vào FTS5 normalized text. Matching yêu cầu tất cả token (AND) để giảm kết quả trùng lỏng. PDF scan không có text layer thì chưa OCR.
 
-## Dataset v0.4
+## Những phần chưa tuyên bố hoàn tất
 
-| File | Loại | Số mẫu |
-|---|---|---|
-| `data/raw/tool_call.jsonl` | Agent gọi công cụ | 36 |
-| `data/raw/code_vi.jsonl` | Code + giải thích tiếng Việt | 27 |
-| `data/raw/chat_vi.jsonl` | Chat kiến thức tiếng Việt | 25 |
-| **Tổng** | | **88 mẫu** |
-
-Dùng `data/prepare_dataset.py` để kiểm tra, merge và chia train/eval trước khi upload Colab.
-Các file trong `data/raw/` được commit; `data/processed/` và `data/generated/` thì không.
-
-## Dataset sinh tự động (v0.5)
-
-`data/generate_dataset.py` sinh thêm mẫu theo khuôn (template + tổ hợp ngẫu nhiên có seed).
-Bậc thang `--scale` nhân số mẫu; mặc định 1.0 khoảng 1115 mẫu, `--scale 1.4` khoảng 1561 mẫu.
-
-| File | Loại | Số mẫu (scale 1.4) | Đặc điểm |
-|---|---|---|---|
-| `data/generated/chat_vi.jsonl` | Hỏi đáp, tính toán, so sánh | 728 | Đáp án tính bằng Python lúc sinh |
-| `data/generated/code_vi.jsonl` | Code + giải thích | 567 | Mỗi đoạn code được chạy thật, số trong giải thích phải khớp stdout |
-| `data/generated/tool_call.jsonl` | Gọi công cụ, 1-nhiều bước, lỗi công cụ | 266 | Đúng định dạng `<tool_call>`, đường dẫn lỗi thật từ `Workspace.resolve` |
-
-Quy trình: sinh theo khuôn → khử trùng lặp trong khuôn → khử câu hỏi đã có trong `data/raw` →
-kiểm chứng code bằng subprocess → ghi JSONL. Nếu còn mẫu sai, generator dừng với lỗi thay vì ghi đè.
-
-Giới hạn: văn phong lặp theo khuôn và câu hỏi có thể trùng giữa các biến thể (chat còn khoảng
-77% câu hỏi duy nhất, tool_call khoảng 90%). Dùng để luyện định dạng và tiếng Việt cơ bản,
-không thay được dữ liệu thật.
-
-## Eval suite v0.4
-
-| Script | Cases | Chỉ số |
-|---|---|---|
-| `evals/tool_call_eval.py` | 62 | format_ok, tool_ok, args_ok |
-| `evals/code_eval.py` | 20 | has_code, has_keywords, no_tool |
-| `evals/chat_eval.py` | 20 | has_topics, no_tool, in_vietnamese |
-
-Chạy toàn bộ 1 lần: `python -m evals.run_all --label baseline`
-Báo cáo lưu tại `evals/reports/` theo timestamp.
+- Semantic embedding/reranker neural: chưa bật để tránh thêm model và RAM.
+- Token streaming real-time: giao diện hiện hiển thị sau khi agent hoàn thành lượt.
+- Voice capture UI: API nhận WAV local, chưa tự bật microphone.
+- Sandbox cấp OS cho code execution: chưa được triển khai.
+- Auto LoRA hot-swap và planner model-based: chưa có.

@@ -10,6 +10,8 @@ import json
 import re
 from dataclasses import dataclass, field
 
+MAX_TOOL_CALLS = 4
+MAX_TOOL_JSON_CHARS = 16000
 TOOL_CALL_RE = re.compile(r"<tool_call>\s*(.*?)\s*</tool_call>", re.DOTALL)
 
 
@@ -30,7 +32,13 @@ def parse_reply(content: str) -> ParsedReply:
     calls: list[ToolCall] = []
     errors: list[str] = []
     for match in TOOL_CALL_RE.finditer(content):
+        if len(calls) >= MAX_TOOL_CALLS:
+            errors.append(f"Vượt quá {MAX_TOOL_CALLS} tool call trong một lượt")
+            break
         raw = match.group(1)
+        if len(raw) > MAX_TOOL_JSON_CHARS:
+            errors.append("Tool call vượt giới hạn kích thước")
+            continue
         try:
             obj = json.loads(raw)
         except json.JSONDecodeError as exc:
@@ -61,5 +69,6 @@ def tool_prompt(tool_specs: list[dict]) -> str:
     ]
     for spec in tool_specs:
         params = json.dumps(spec["parameters"], ensure_ascii=False)
-        lines.append(f"- {spec['name']}: {spec['description']} | tham số: {params}")
+        approval = " | cần người dùng phê duyệt" if spec.get("requires_approval") else ""
+        lines.append(f"- {spec['name']}: {spec['description']} | tham số: {params}{approval}")
     return "\n".join(lines)

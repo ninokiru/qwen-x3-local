@@ -1,2 +1,2 @@
-# Runtime không cần thư viện ngoài. Chỉ cần pytest để chạy test trên máy local.
-pytest>=8.0
+# Runtime core chỉ dùng thư viện chuẩn Python.
+# Tùy chọn: pip install -e ".[dev,documents]" để có pytest và đọc PDF.

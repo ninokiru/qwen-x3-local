@@ -44,3 +44,15 @@ def test_agent_stops_at_max_steps(tmp_path):
     agent = Agent(client, build_tools(Workspace(tmp_path / "ws")), max_steps=3)
     agent_msg = agent.ask("Liệt kê các file trong thư mục workspace")
     assert "giới hạn" in agent_msg
+
+
+def test_agent_does_not_write_without_explicit_approval(tmp_path):
+    from pathlib import Path
+    ws = Workspace(tmp_path / "ws")
+    client = FakeClient([
+        '<tool_call>{"name":"write_file","arguments":{"path":"new.txt","content":"hello"}}</tool_call>',
+        "Tệp chưa được ghi vì chưa có phê duyệt.",
+    ])
+    agent = Agent(client, build_tools(ws), max_steps=2)
+    assert "chưa có phê duyệt" in agent.ask("Tạo file new.txt")
+    assert not (Path(ws.root) / "new.txt").exists()

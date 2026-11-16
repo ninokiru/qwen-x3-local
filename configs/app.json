@@ -1,13 +1,33 @@
 {
   "server": {
     "base_url": "http://127.0.0.1:8080",
-    "timeout_s": 300,
+    "timeout_s": 180,
     "temperature": 0.2,
-    "max_tokens": 1024
+    "max_tokens": 768,
+    "retries": 1
+  },
+  "runtime": {
+    "context_size": 4096,
+    "threads": 2,
+    "offline_mode": true,
+    "max_request_chars": 20000
+  },
+  "web": {
+    "enabled": true,
+    "host": "127.0.0.1",
+    "port": 8765,
+    "max_upload_mb": 10
+  },
+  "memory": {
+    "enabled": true,
+    "semantic_search": false,
+    "top_k": 4,
+    "max_context_chars": 5000
   },
   "workspace": "workspace",
-  "max_steps": 6,
-  "max_history": 40,
-  "run_timeout_s": 20,
-  "db_path": "data/memory.sqlite3"
+  "max_steps": 5,
+  "max_history": 12,
+  "run_timeout_s": 10,
+  "db_path": "data/qwen_x3.sqlite3",
+  "allow_unsafe_python": false
 }

@@ -30,3 +30,10 @@ def test_plain_text_has_no_calls():
 def test_tool_prompt_lists_tools():
     text = tool_prompt([{"name": "list_dir", "description": "liệt kê", "parameters": {"type": "object"}}])
     assert "list_dir" in text and "<tool_call>" in text
+
+
+def test_limits_tool_call_count():
+    block = '<tool_call>{"name":"list_dir","arguments":{}}</tool_call>'
+    parsed = parse_reply(block * 5)
+    assert len(parsed.calls) == 4
+    assert parsed.errors

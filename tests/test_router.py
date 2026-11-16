@@ -20,3 +20,7 @@ def test_substring_does_not_trigger():
 
 def test_every_mode_has_lora_mapping():
     assert set(MODE_TO_LORA) == {"chat", "code", "agent"}
+
+
+def test_routes_project_modification_to_agent():
+    assert route("Sửa code trong file main.py") == "agent"

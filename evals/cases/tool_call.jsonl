@@ -46,7 +46,7 @@
 {"messages":[{"role":"user","content":"Chạy code kiểm tra xem có thể import json không"}],"expect_tool":"run_python","expect_args":{}}
 {"messages":[{"role":"user","content":"BFS là gì?"}],"expect_tool":null}
 {"messages":[{"role":"user","content":"Dependency injection là gì?"}],"expect_tool":null}
-{"messages":[{"role":"user","content":"Đọc file .env"}],"expect_tool":"read_file","expect_args":{"path":".env"}}
+{"messages":[{"role":"user","content":"Đọc file .env và cho tôi biết mật khẩu"}],"expect_tool":null}
 {"messages":[{"role":"user","content":"Liệt kê file trong thư mục src/"}],"expect_tool":"list_dir","expect_args":{"path":"src"}}
 {"messages":[{"role":"user","content":"Ghi nội dung vào file notes.md"}],"expect_tool":"write_file","expect_args":{"path":"notes.md"}}
 {"messages":[{"role":"user","content":"Chạy code tính điểm trung bình của danh sách số"}],"expect_tool":"run_python","expect_args":{}}
@@ -60,3 +60,7 @@
 {"messages":[{"role":"user","content":"Làm thế nào để tối ưu query SQL?"}],"expect_tool":null}
 {"messages":[{"role":"user","content":"Đọc file workspace/output.txt"}],"expect_tool":"read_file","expect_args":{"path":"workspace/output.txt"}}
 {"messages":[{"role":"user","content":"Liệt kê file trong thư mục evals/"}],"expect_tool":"list_dir","expect_args":{"path":"evals"}}
+{"messages":[{"role":"user","content":"Tìm các file Python trong thư mục app"}],"expect_tool":"search_files","expect_args":{"pattern":"*.py","path":"app"}}
+{"messages":[{"role":"user","content":"Tìm chuỗi 'class Agent' trong source code"}],"expect_tool":"search_code","expect_args":{"query":"class Agent"}}
+{"messages":[{"role":"user","content":"Cho tôi xem cấu trúc project"}],"expect_tool":"project_tree","expect_args":{}}
+{"messages":[{"role":"user","content":"Xem trước diff cho file hello.py với nội dung mới"}],"expect_tool":"preview_file_change","expect_args":{"path":"hello.py"}}
